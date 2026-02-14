@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy Valentine's Day afraa ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 40px;
+        }
+
+        h2 {
+            margin-top: 10px;
+        }
+
+       
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 5s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+
+       
+        .slideshow {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid white;
+        }
+
+        .slideshow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .yes {
+            background-color: white;
+            color: #ff4b6e;
+        }
+
+        .no {
+            background-color: black;
+            color: white;
+            position: absolute;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <audio id="bgMusic" loop>
+        <source src="valentine.mp3" type="audio/mpeg">
+    </audio>
+
+    <h1>Happy Valentine's Day ❤️</h1>
+    <h2 id="name">For My Love 💕</h2>
+
+    <div class="slideshow">
+        <img id="slide" src="photo1.jpeg">
+    </div>
+
+    <h2>Will you be my Valentine? 💌</h2>
+
+    <button class="yes" onclick="yesClick()">Yes ❤️</button>
+    <button class="no" onmouseover="moveButton()" id="noBtn">No 😜</button>
+
+    <canvas id="fireworks"></canvas>
+   
+
+
+<script>
+    function openLetter() {
+    window.location.href = "letter.html";
+}
+
+    
+    document.getElementById("name").innerHTML = "For My Beautiful afraa 💖";
+
+   
+    document.body.addEventListener("click", function() {
+        document.getElementById("bgMusic").play();
+    }, { once: true });
+
+    // 📸 Slideshow
+    let images = ["photo1.jpeg", "photo2.jpeg", "photo3.jpeg"];
+    let i = 0;
+
+    setInterval(function() {
+        i = (i + 1) % images.length;
+        document.getElementById("slide").src = images[i];
+    }, 2000);
+
+    function yesClick() {
+    let music = document.getElementById("bgMusic");
+    music.play();   // ensure music starts
+
+    startFireworks();
+
+    setTimeout(() => {
+        window.location.href = "letter.html";
+    }, 2500);
+}
+
+
+
+    
+    function moveButton() {
+        let btn = document.getElementById("noBtn");
+        btn.style.top = Math.random() * window.innerHeight + "px";
+        btn.style.left = Math.random() * window.innerWidth + "px";
+    }
+
+    
+    function createHeart() {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.fontSize = Math.random() * 20 + 10 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 5000);
+    }
+
+    setInterval(createHeart, 300);
+
+    
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function startFireworks() {
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                createFirework();
+            }, i * 200);
+        }
+    }
+
+    function createFirework() {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height / 2;
+
+        for (let i = 0; i < 50; i++) {
+            let angle = Math.random() * 2 * Math.PI;
+            let speed = Math.random() * 5 + 2;
+            let particle = {
+                x: x,
+                y: y,
+                dx: Math.cos(angle) * speed,
+                dy: Math.sin(angle) * speed,
+                life: 100
+            };
+            animateParticle(particle);
+        }
+    }
+
+    function animateParticle(p) {
+        let interval = setInterval(() => {
+            ctx.fillStyle = "white";
+            ctx.fillRect(p.x, p.y, 2, 2);
+            p.x += p.dx;
+            p.y += p.dy;
+            p.life--;
+
+            if (p.life <= 0) {
+                clearInterval(interval);
+            }
+        }, 20);
+    }
+</script>
+
+</body>
+</html>
